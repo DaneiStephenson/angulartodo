@@ -2,8 +2,38 @@ var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
 var mongoose = require("mongoose");
-mongoose.Promise = require('bluebird');
-mongoose.connect("mongodb://localhost/angulartodo");
+var logger = require("morgan");
+// mongoose.Promise = require('bluebird');
+// mongoose.connect("mongodb://localhost/Todo");
+
+
+
+
+app.use(logger("dev"));
+app.use(bodyParser.urlencoded({
+  extended: false
+}));
+
+app.use(express.static("public"));
+
+// Database configuration
+var databaseUrl = 'mongodb://localhost/Todo';
+// var collections = ["ToDo"];
+
+// Hook mongojs config to db variable
+var db = mongoose.connection;
+// mongojs(databaseUrl, collections);
+
+// Log any mongojs errors to console
+db.on("error", function(error) {
+  console.log("Database Error:", error);
+});
+
+
+
+
+
+
 
 app.use(bodyParser.json());
 app.use(bodyParser.text());
@@ -29,7 +59,7 @@ app.get("/", function(req, res) {
 app.post("/submit", function(req, res) {
   console.log(req.body);
   // Insert the note into the notes collection
-  db.notes.insert(req.body, function(error, saved) {
+  db.completeBy.insert(req.body, function(error, saved) {
     // Log any errors
     if (error) {
       console.log(error);
@@ -45,7 +75,7 @@ app.post("/submit", function(req, res) {
 // Retrieve results from mongo
 app.get("/all", function(req, res) {
   // Find all notes in the notes collection
-  db.notes.find({}, function(error, found) {
+  db.completeBy.find({}, function(error, found) {
     // Log any errors
     if (error) {
       console.log(error);
@@ -97,8 +127,8 @@ app.post("/update/:id", function(req, res) {
     // Set the title, note and modified parameters
     // sent in the req's body.
     $set: {
-      "title": req.body.title,
-      "note": req.body.note,
+      "todo": req.body.title,
+      "completeBy": req.body.note,
       "modified": Date.now()
     }
   }, function(error, edited) {

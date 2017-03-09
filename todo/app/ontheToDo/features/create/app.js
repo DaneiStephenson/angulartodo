@@ -11,8 +11,8 @@ function getResults() {
     // For each note...
     for (var i = 0; i < data.length; i++) {
       // ...populate #results with a p-tag that includes the note's title and object id
-      $("#results").prepend("<p class='dataentry' data-id=" + data[i]._id + "><span class='dataTitle' data-id=" +
-        data[i]._id + ">" + data[i].title + "</span><span class=deleter>X</span></p>");
+      $("#results").prepend("<p class='dataentry' data-id=" + data[i]._id + "><span class='datatodo' data-id=" +
+        data[i]._id + ">" + data[i].todo + "</span><span class=deleter>X</span></p>");
     }
   });
 }
@@ -29,18 +29,18 @@ $(document).on("click", "#makenew", function() {
     dataType: "json",
     url: "/submit",
     data: {
-      title: $("#title").val(),
-      note: $("#note").val(),
+      todo: $("#todo").val(),
+      note: $("#completeBy").val(),
       created: Date.now()
     }
   })
   // If that API call succeeds, add the title and a delete button for the note to the page
   .done(function(data) {
     // Add the title and delete button to the #results section
-    $("#results").prepend("<p class='dataentry' data-id=" + data._id + "><span class='dataTitle' data-id=" +
-      data._id + ">" + data.title + "</span><span class=deleter>X</span></p>");
+    $("#results").prepend("<p class='dataentry' data-id=" + data._id + "><span class='datatodo' data-id=" +
+      data._id + ">" + data.todo + "</span><span class=deleter>X</span></p>");
     // Clear the note and title inputs on the page
-    $("#note").val("");
+    $("#completeBy").val("");
     $("#title").val("");
   }
   );
@@ -76,8 +76,8 @@ $(document).on("click", ".deleter", function() {
       // Remove the p-tag from the DOM
       selected.remove();
       // Clear the note and title inputs
-      $("#note").val("");
-      $("#title").val("");
+      $("#completeBy").val("");
+      $("#todo").val("");
       // Make sure the #actionbutton is submit (in case it's update)
       $("#actionbutton").html("<button id='makenew'>Submit</button>");
     }
@@ -85,7 +85,7 @@ $(document).on("click", ".deleter", function() {
 });
 
 // When user click's on note title, show the note, and allow for updates
-$(document).on("click", ".dataTitle", function() {
+$(document).on("click", ".datatodo", function() {
   // Grab the element
   var selected = $(this);
   // Make an ajax call to find the note
@@ -95,8 +95,8 @@ $(document).on("click", ".dataTitle", function() {
     url: "/find/" + selected.attr("data-id"),
     success: function(data) {
       // Fill the inputs with the data that the ajax call collected
-      $("#note").val(data.note);
-      $("#title").val(data.title);
+      $("#completeBy").val(data.completeBy);
+      $("#todo").val(data.todo);
       // Make the #actionbutton an update button, so user can
       // Update the note s/he chooses
       $("#actionbutton").html("<button id='updater' data-id='" + data._id + "'>Update</button>");
@@ -117,14 +117,14 @@ $(document).on("click", "#updater", function() {
     url: "/update/" + selected.attr("data-id"),
     dataType: "json",
     data: {
-      title: $("#title").val(),
-      note: $("#note").val()
+      title: $("#todo").val(),
+      note: $("#completeBy").val()
     },
     // On successful call
     success: function(data) {
       // Clear the inputs
-      $("#note").val("");
-      $("#title").val("");
+      $("# completeBy").val("");
+      $("#todo").val("");
       // Revert action button to submit
       $("#actionbutton").html("<button id='makenew'>Submit</button>");
       // Grab the results from the db again, to populate the DOM

@@ -9,15 +9,75 @@
 
 </form>
 </p> -->
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>NoteTaker</title>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <style media="screen">
+      body {
+        text-align: center;
+        background-color: cornflowerblue;
+      }
+      h1 {
+        font-size: 40px;
+        color: white;
+      }
+      .deleter {
+        margin-left: 20px;
+        color: red;
+        cursor: pointer;
+        text-align: right;
+      }
+      input {
+        width: 400px;
+        height: 50px;
+        margin-left: auto;
+        margin-right: auto;
+        font-size: 42px;
+        background-color: antiquewhite;
+      }
+      textarea {
+        width: 400px;
+        height: 400px;
+        margin-left: auto;
+        margin-right: auto;
+        font-size: 24px;
+        background-color: antiquewhite;
 
-<div  class="divborder" >
+      }
+      .dataTitle {
+        cursor: pointer;
+        font-size: 24px;
+      }
+      #results {
+        width: 400px;
+        height: 200px;
+        overflow: auto;
+        margin-left: auto;
+        margin-right: auto;
+        background-color: antiquewhite;
+      }
+      #actionbutton {
+        display: inline-block;
+      }
+      #buttons {
+        margin: 20px;
+      }
+    </style>
+  </head>
+  <body>
+
+
+<div  class="divborder userinput"  >
   <h4>Formatting codes playground</h4>
   <p class="form-group">
-    <label>To Do</label>
+    <label id="todo">To Do</label>
     <input type="text" ng-model="format" class="form-control">
   </p>
   <p class="form-group">
-    <label>Date</label>
+    <label id="completeBy">Date</label>
     <input type="text" class="form-control"  ng-model="date" />
     <div id="actionbutton">
           <button id="makenew">Create-To-Do</button>
@@ -25,4 +85,6 @@
   </p>
 </div>
 
+</body>
 
+  
